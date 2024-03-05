@@ -52,6 +52,10 @@ export class ContactListComponent implements OnInit {
     return this.contactService.getEditMode();
   }
 
+  isAddMode(): boolean {
+    return this.contactService.getAddMode();
+  }
+
   search(value: string) {
     this.term = value
   }

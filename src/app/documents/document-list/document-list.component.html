@@ -2,7 +2,7 @@
   <div class="panel-heading">
     <div class="row pad-left-right">
       <span class="pull-left title">Documents</span>
-      <button class="btn btn-success pull-right" (click)="onNewDocument()" [disabled]="isEditMode()">New Document</button>
+      <button class="btn btn-success pull-right" (click)="onNewDocument()" [disabled]="isEditMode() || isAddMode()">New Document</button>
     </div>
   </div>
   <div class="panel-body">

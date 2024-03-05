@@ -49,4 +49,9 @@ export class DocumentListComponent implements OnInit{
   isEditMode(): boolean {
     return this.documentService.getEditMode();
   }
+
+  isAddMode(): boolean {
+    return this.documentService.getAddMode();
+  }
 }
+

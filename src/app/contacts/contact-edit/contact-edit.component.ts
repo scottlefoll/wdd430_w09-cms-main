@@ -37,6 +37,7 @@ export class ContactEditComponent implements OnInit, CanComponentDeactivate {
           this.id = "";
           this.contact = new Contact("", "", "", "", "", []);
           this.contactService.setEditMode(false);
+          this.contactService.setAddMode(true);
           return;
         }
         this.contact = this.contactService.getContact(this.id);
@@ -50,6 +51,7 @@ export class ContactEditComponent implements OnInit, CanComponentDeactivate {
         }
 
         this.contactService.setEditMode(true);
+        this.contactService.setAddMode(false);
         // clone the contact object to a new object
         this.newContact = JSON.parse(this.stringifyWithoutCircular(this.contact));
       }
@@ -86,12 +88,15 @@ export class ContactEditComponent implements OnInit, CanComponentDeactivate {
     } else {
       this.contactService.addContact(this.newContact);
     }
+    this.contactService.setEditMode(false);
+    this.contactService.setAddMode(false);
     this.router.navigate(['/contacts']);
   }
 
   onCancel() {
     if (this.canDeactivate()) {
       this.contactService.setEditMode(false);
+      this.contactService.setAddMode(false);
       this.router.navigate(['/contacts']);
     }
   }

@@ -13,6 +13,7 @@ export class ContactService{
   contactChangedEvent = new EventEmitter<Contact[]>();
   contactListChangedEvent = new Subject<Contact[]>();
   private editMode: boolean = false;
+  private addMode: boolean = false;
   maxContactId: number;
   contacts: Contact[] = [];
 
@@ -78,6 +79,14 @@ export class ContactService{
 
   setEditMode(value: boolean): void {
     this.editMode = value;
+  }
+
+  getAddMode(): boolean {
+    return this.addMode;
+  }
+
+  setAddMode(value: boolean): void {
+    this.addMode = value;
   }
 
   updateContact(originalContact: Contact, newContact: Contact){

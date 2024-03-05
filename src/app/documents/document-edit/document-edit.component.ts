@@ -35,6 +35,7 @@ export class DocumentEditComponent implements OnInit {
           this.id = "";
           this.document = new Document("", "", "", "", []);
           this.documentService.setEditMode(false);
+          this.documentService.setAddMode(true);
           return;
         }
         this.document = this.documentService.getDocument(this.id);
@@ -44,6 +45,7 @@ export class DocumentEditComponent implements OnInit {
         }
 
         this.documentService.setEditMode(true);
+        this.documentService.setAddMode(false);
         // clone the document object to a new object
         this.newDocument = JSON.parse(JSON.stringify(this.document));
       }
@@ -64,12 +66,15 @@ export class DocumentEditComponent implements OnInit {
     } else {
       this.documentService.addDocument(this.newDocument);
     }
+    this.documentService.setEditMode(false);
+    this.documentService.setAddMode(false);
     this.router.navigate(['/documents']);
   }
 
   onCancel() {
     if (this.canDeactivate()) {
       this.documentService.setEditMode(false);
+      this.documentService.setAddMode(false);
       this.router.navigate(['/documents']);
     }
   }

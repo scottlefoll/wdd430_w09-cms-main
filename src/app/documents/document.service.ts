@@ -13,6 +13,7 @@ export class DocumentService{
   documentChangedEvent = new EventEmitter<Document[]>();
   documentListChangedEvent = new Subject<Document[]>();
   private editMode: boolean = false;
+  private addMode: boolean = false;
   maxDocumentId: number;
   documents: Document[] = [];
 
@@ -73,6 +74,14 @@ export class DocumentService{
 
   setEditMode(value: boolean): void {
     this.editMode = value;
+  }
+
+  getAddMode(): boolean {
+    return this.addMode;
+  }
+
+  setAddMode(value: boolean): void {
+    this.addMode = value;
   }
 
   updateDocument(originalDocument: Document, newDocument: Document){

@@ -1,0 +1,24 @@
+.panel-title {
+  font-size: 24px;
+  vertical-align: middle;
+}
+
+.btn {
+  margin: 2px;
+}
+
+.pad-left-right {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.margin-left-right {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.label-value {
+  word-wrap: break-word; /* or overflow-wrap: break-word; */
+  display: block; /* Ensures it takes the full width available */
+}
+

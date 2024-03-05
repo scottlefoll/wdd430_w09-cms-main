@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-6">
+        <h1 class="panel-title text-left">Contacts</h1>
+      </div>
+      <div class="col-xs-6 text-right">
+        <button class="btn btn-success pull-right" (click)="onNewContact()" [disabled]="isEditMode()">New Contact</button>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div cdkDropList [cdkDropListData]="contacts">
+      <div
+        cdkDrag
+        *ngFor="let contact of contacts"
+        [cdkDragData]="contact">
+        <cms-contact-item
+          [contact]="contact">
+        </cms-contact-item>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<a
+   style="cursor: pointer;"
+   [routerLink]="['/contacts', contact.id]"
+   routerLinkActive="active"
+   class="row contact-item list-group-item clearfix"
+>
+  <div [ngClass]="{'col-xs-12': contact.name.includes('team'), 'col-xs-6': !contact.name.includes('team')}">
+    <h3>{{ contact.name }}</h3>
+  </div>
+  <div class="col-xs-6 text-right">
+    <img
+      *ngIf="!contact.name.includes('team') && contact.imageUrl?.trim()"
+        [src]="contact.imageUrl"
+        [alt]="contact.imageUrl?.trim() ? contact.name : ''"
+        class="contact-image item">
+  </div>
+</a>

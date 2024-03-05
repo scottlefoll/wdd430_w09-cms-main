@@ -1,0 +1,28 @@
+<!-- <div *ngIf="!contact.name.includes('team')" class="panel panel-default"> -->
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-6">
+        <h1 class="panel-title text-left"> {{ contact.name }} </h1>
+        <!-- Use *ngIf to conditionally render the image -->
+        <img src="{{ contact.imageUrl }}" class="contact-image">
+      </div>
+      <div class="col text-right">
+        <a class="btn btn-primary"
+          style="cursor: pointer;"
+          [routerLink]="['edit']"
+          routerLinkActive="active"
+        >Edit</a>
+
+        <a class="btn btn-danger"
+          style="cursor: pointer;"
+          (click)="onDelete()"
+        >Delete</a>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <h4>Email: {{ contact.email }}</h4>
+    <h4>Phone: {{ contact.phone }}</h4>
+  </div>
+</div>

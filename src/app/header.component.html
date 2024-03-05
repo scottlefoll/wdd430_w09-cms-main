@@ -1,0 +1,34 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <!-- html code from before routerLinkActive implementation -->
+      <!-- <button type="button" class="navbar-toggle">
+        <span class="icon-bar" *ngFor="let iconBar of [1,2,3]"></span>
+      </button> -->
+      <!-- <a routerLink="/" class="navbar-brand" href="#">WeLearn CMS R</a> -->
+      <a href="#" class="navbar-brand" href="#">WeLearn CMS</a>
+    </div>
+
+    <!-- <div class="navbar-collapse" [class.collapse]="collapsed" (window:resize)="collapsed = true"> -->
+    <div class="colla pse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li routerLinkActive="active"><a routerLink="/documents">Documents</a></li>
+        <li routerLinkActive="active"><a routerLink="/messages">Messages</a></li>
+        <li routerLinkActive="active"><a routerLink="/contacts">Contacts</a></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown" appDropdown>
+          <a style="cursor: pointer;" class="dropdown-toggle" role="button">Manage <span class="caret"></span></a>
+          <!-- <a href="#" class="dropdown-toggle" role="button">Manage <span class="caret"></span></a> -->
+          <ul class="dropdown-menu">
+            <li><a routerLink="/profile">Profile</a></li>
+            <li><a routerLink="/setting">Settings</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a routerLink="/logout">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

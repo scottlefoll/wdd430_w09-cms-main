@@ -90,6 +90,7 @@ export class ContactService{
   }
 
   updateContact(originalContact: Contact, newContact: Contact){
+    console.log('updateContact in contact.service.ts');
     if(!originalContact || !newContact){
       console.error('Contact not found - update unsuccessful!');
       alert('Contact not found - update unsuccessfull!');

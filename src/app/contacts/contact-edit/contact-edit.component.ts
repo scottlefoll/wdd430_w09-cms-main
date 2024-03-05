@@ -84,6 +84,7 @@ export class ContactEditComponent implements OnInit, CanComponentDeactivate {
     );
 
     if (this.contactService.getEditMode()) {
+      console.log('updateContact in contact-edit.component.ts');
       this.contactService.updateContact(this.contact, this.newContact)
     } else {
       this.contactService.addContact(this.newContact);

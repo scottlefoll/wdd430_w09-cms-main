@@ -31,6 +31,9 @@ export class DocumentEditComponent implements OnInit {
       (params: Params) => {
         this.id = params['id'];
         if (this.id === null || this.id === undefined) {
+          this.newDocument = new Document("", "", "", "", []);
+          this.id = "";
+          this.document = new Document("", "", "", "", []);
           this.documentService.setEditMode(false);
           return;
         }
@@ -66,6 +69,7 @@ export class DocumentEditComponent implements OnInit {
 
   onCancel() {
     if (this.canDeactivate()) {
+      this.documentService.setEditMode(false);
       this.router.navigate(['/documents']);
     }
   }

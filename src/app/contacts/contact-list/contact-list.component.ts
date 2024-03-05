@@ -12,9 +12,11 @@ import { ContactService } from '../contact.service';
   styleUrls: ['./contact-list.component.css']
 })
 export class ContactListComponent implements OnInit {
+
   contacts: Contact[] = [];
   contactId: string;
   subscription: Subscription;
+  term: string;
 
   constructor(private contactService: ContactService,
               private router: Router,
@@ -48,5 +50,9 @@ export class ContactListComponent implements OnInit {
 
   isEditMode(): boolean {
     return this.contactService.getEditMode();
+  }
+
+  search(value: string) {
+    this.term = value
   }
 }

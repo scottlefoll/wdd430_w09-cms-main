@@ -18,7 +18,6 @@ export class ContactEditComponent implements OnInit, CanComponentDeactivate {
   contact: Contact;
   newContact: Contact;
   groupContacts: Contact[] = [];
-  // private editMode: boolean = false;
   invalidContact: boolean = false;
   id: string;
   subscription: Subscription;
@@ -34,6 +33,9 @@ export class ContactEditComponent implements OnInit, CanComponentDeactivate {
       (params: Params) => {
         this.id = params['id'];
         if (this.id === null || this.id === undefined) {
+          this.newContact = new Contact("", "", "", "", "", []);
+          this.id = "";
+          this.contact = new Contact("", "", "", "", "", []);
           this.contactService.setEditMode(false);
           return;
         }
@@ -76,7 +78,8 @@ export class ContactEditComponent implements OnInit, CanComponentDeactivate {
       form.value.email,
       form.value.phone,
       form.value.imageUrl,
-      this.groupContacts);
+      this.groupContacts
+    );
 
     if (this.contactService.getEditMode()) {
       this.contactService.updateContact(this.contact, this.newContact)
@@ -88,6 +91,7 @@ export class ContactEditComponent implements OnInit, CanComponentDeactivate {
 
   onCancel() {
     if (this.canDeactivate()) {
+      this.contactService.setEditMode(false);
       this.router.navigate(['/contacts']);
     }
   }
@@ -103,9 +107,8 @@ export class ContactEditComponent implements OnInit, CanComponentDeactivate {
   onDrop(event: CdkDragDrop<Contact>) {
     if (event.previousContainer !== event.container) {
       const contactCopy = {...event.item.data };
-      const invalidGroupContact = this.isInvalidContact(contactCopy);
 
-      if (invalidGroupContact){
+      if (this.isInvalidContact(contactCopy)) {
         this.invalidContact = true;
         return;
       }
@@ -117,10 +120,16 @@ export class ContactEditComponent implements OnInit, CanComponentDeactivate {
   }
 
   isInvalidContact(newContact: Contact) {
+    if (!newContact.id) {
+      this.invalidContact = true;
+      return true;
+    }
+
     if (!newContact) {
       this.invalidContact = true;
       return true;
     }
+
     if (newContact && newContact.id === this.contact.id) {
       this.invalidContact = true;
       return true;

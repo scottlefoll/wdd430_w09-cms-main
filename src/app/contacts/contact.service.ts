@@ -1,8 +1,8 @@
 import { EventEmitter, Injectable } from "@angular/core";
 import { Subject } from "rxjs";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import { Contact } from "./contact.model";
-import { MOCKCONTACTS } from "./MOCKCONTACTS";
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +12,14 @@ export class ContactService{
   contactSelectedEvent = new EventEmitter<Contact>();
   contactChangedEvent = new EventEmitter<Contact[]>();
   contactListChangedEvent = new Subject<Contact[]>();
+  private editMode: boolean = false;
   maxContactId: number;
-  private editMode = false;
-
   contacts: Contact[] = [];
 
-  constructor() {
-    this.contacts = this.sortContacts(MOCKCONTACTS);
+  // Inject the HttpClient object into the DocumentService class through dependency injection.
+  // The HttpClient object will be used to send HTTP requests to the server.
+  constructor(private http: HttpClient) {
+    this.contacts = this.sortContacts(this.getContacts());
     this.maxContactId = this.getMaxId();
   }
 
@@ -40,10 +41,25 @@ export class ContactService{
 
     }
     this.contacts.push(newContact);
-    this.contactListChangedEvent.next(this.contacts.slice());
+    // this.contactListChangedEvent.next(this.contacts.slice());
+    this.storeContacts();
   }
 
-  getContacts(){
+  getContacts() {
+    // From Database:
+    this.http.get('https://wdd430-cms-5cd5d-default-rtdb.firebaseio.com/contacts.json')
+      .subscribe(
+        (contacts: Contact[]) => {
+          this.contacts = contacts;
+          this.maxContactId = this.getMaxId();
+          this.contacts = this.sortContacts(this.contacts);
+          this.contactListChangedEvent.next(this.contacts.slice());
+        },
+        (error: any) => {
+          console.error(error);
+        }
+      );
+
     return this.contacts.slice();
   }
 
@@ -66,12 +82,14 @@ export class ContactService{
 
   updateContact(originalContact: Contact, newContact: Contact){
     if(!originalContact || !newContact){
+      console.error('Contact not found - update unsuccessful!');
       alert('Contact not found - update unsuccessfull!');
       return;
     }
     const pos = this.contacts.indexOf(originalContact);
     if(pos < 0){
       alert('Contact not found - update unsuccessfull!');
+      console.error('Contact not found - update unsuccessful!');
       return;
     }
 
@@ -81,21 +99,38 @@ export class ContactService{
     // Assign values of the newContact to the originalContact
     this.contacts[pos] = newContact;
     // Update the contact list
-    this.contactListChangedEvent.next(this.contacts.slice());
+    // this.contactListChangedEvent.next(this.contacts.slice());
+    this.storeContacts();
+    return;
   }
 
   deleteContact(contact: Contact) {
     if (!contact) {
       alert('Contact not found - deletion unsuccessfull!');
+      console.error('Contact not found - deletion unsuccessful!');
       return;
     }
     const pos = this.contacts.indexOf(contact);
     if (pos < 0) {
       alert('Contact not found - deletion unsuccessfull!');
+      console.error('Contact not found - deletion unsuccessful!');
       return;
     }
     this.contacts.splice(pos, 1);
-    this.contactChangedEvent.next(this.contacts.slice());
+    // this.contactChangedEvent.next(this.contacts.slice());
+    this.storeContacts();
+  }
+
+  storeContacts() {
+    let contacts = this.stringifyWithoutCircular(this.contacts);
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    this.http.put('https://wdd430-cms-5cd5d-default-rtdb.firebaseio.com/contacts.json', contacts, {headers: headers})
+      .subscribe(response => {
+        this.contactListChangedEvent.next(this.contacts.slice());
+      });
   }
 
   private sortContacts(contacts: Contact[]): Contact[] {
@@ -138,6 +173,22 @@ export class ContactService{
     }
     return maxId;
   }
+
+  stringifyWithoutCircular(obj: any): string {
+    const cache = new Set();
+
+    return JSON.stringify(obj, (key, value) => {
+      if (typeof value === 'object' && value !== null) {
+        if (cache.has(value)) {
+          // Circular reference found, discard key
+          return;
+        }
+        cache.add(value);
+      }
+      return value;
+    });
+  }
+
 }
 
 

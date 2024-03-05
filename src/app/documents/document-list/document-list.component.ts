@@ -45,4 +45,8 @@ export class DocumentListComponent implements OnInit{
   onNewDocument(){
     this.router.navigate(['new'], {relativeTo: this.route});
   }
+
+  isEditMode(): boolean {
+    return this.documentService.getEditMode();
+  }
 }

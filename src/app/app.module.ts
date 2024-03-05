@@ -3,6 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CanDeactivate } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header.component';
@@ -21,6 +24,7 @@ import { DropdownDirective } from './shared/dropdown.directive';
 import { AppRoutingModule } from './app-routing.module';
 import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
 import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
+import { ContactsFilterPipe } from './contacts/contacts-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -40,6 +44,7 @@ import { ContactEditComponent } from './contacts/contact-edit/contact-edit.compo
     DropdownDirective,
     DocumentEditComponent,
     ContactEditComponent,
+    ContactsFilterPipe
   ],
   imports: [
     BrowserModule,
@@ -47,6 +52,7 @@ import { ContactEditComponent } from './contacts/contact-edit/contact-edit.compo
     ReactiveFormsModule,
     AppRoutingModule,
     DragDropModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

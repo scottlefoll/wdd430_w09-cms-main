@@ -7,13 +7,11 @@
       <h1 class="panel-title text-left">Contacts</h1>
     </div>
 
-    <div class="row">
-      <div class="col-xs-7">
+    <div class="col-xs-6">
       <!-- <div class="input-group pull-left pad-left-right col-xs-7"> -->
         <input type="text" class="form-control pull-left pad-left-right" (keyup)="search(searchBox.value)" placeholder="Enter a search value" #searchBox>
         <div class="glyphicon glyphicon-search input-group-addon" (click)="search(searchBox.value)"></div>
         <button class="btn btn-success pull-right pad-left-right" [routerLink]="['new']" [disabled]="isEditMode()">New Contact</button>
-      </div>
     </div>
   </div>
 </div>

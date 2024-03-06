@@ -21,8 +21,8 @@ export class ContactListComponent implements OnInit {
   constructor(private contactService: ContactService,
               private router: Router,
               private route: ActivatedRoute) {
-    this.contacts = this.contactService.getContacts();
-  }
+                this.contacts = this.contactService.getContacts();
+              }
 
   ngOnInit() {
     this.contactService.contactChangedEvent

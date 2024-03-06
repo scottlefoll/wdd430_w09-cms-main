@@ -1,24 +1,3 @@
-  <!-- <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="row">
-        <div class="col-xs-6 d-flex align-items-start">
-          <div class="text-left">
-            <h1 class="panel-title">Contacts</h1>
-            <div class="input-group mt-3">
-              <input type="text" class="form-control" (keyup)="search(searchBox.value)" placeholder="Enter a search value" #searchBox>
-              <span class="input-group-addon" (click)="search(searchBox.value)">
-                <span class="glyphicon glyphicon-search"></span>
-              </span>
-            </div>
-          </div>
-          <div class="text-right ml-auto">
-            <button class="btn btn-success mt-3" style="margin-top: 0.75rem;" [routerLink]="['new']" [disabled]="isEditMode()">New Contact</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="row">
@@ -39,25 +18,6 @@
       </div>
     </div>
   </div>
-  <!-- <div class="panel-heading">
-    <div class="row">
-      <div class="col-xs-6">
-        <h1 class="panel-title text-left">Contacts</h1>
-      </div>
-      <div class="col-xs-6 text-right">
-        <button class="btn btn-success pull-right" (click)="onNewContact()" [disabled]="isEditMode()">New Contact</button>
-      </div>
-    </div>
-  </div> -->
-
-  <!-- <div class="panel-heading">
-    <div class="row pad-left-right">
-       <span class="pull-left title>Contacts"></span>
-       <div class="pull-right">
-          <a class="btn btn-success pad-left-right" [routerLink]="['new']">New Contact</a>
-       </div>
-    </div>
- </div> -->
 
   <div class="panel-body">
     <div cdkDropList [cdkDropListData]="contacts">

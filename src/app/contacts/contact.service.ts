@@ -1,6 +1,7 @@
 import { EventEmitter, Injectable } from "@angular/core";
-import { Subject } from "rxjs";
+import { Subject, Observable } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { catchError, tap } from "rxjs";
 
 import { Contact } from "./contact.model";
 
@@ -29,7 +30,7 @@ export class ContactService{
       return;
     }
 
-    this.maxContactId++;
+    this.maxContactId = this.getMaxId()+1;
     newContact.id = this.maxContactId.toString();
 
     if (newContact.group) {
@@ -54,14 +55,14 @@ export class ContactService{
           this.contacts = contacts;
           this.maxContactId = this.getMaxId();
           this.contacts = this.sortContacts(this.contacts);
+          console.log('contacts from database: ', this.contacts);
           this.contactListChangedEvent.next(this.contacts.slice());
         },
         (error: any) => {
           console.error(error);
         }
       );
-
-    return this.contacts.slice();
+      return this.contacts.slice();
   }
 
   getContact(id: string): Contact{
@@ -173,16 +174,34 @@ export class ContactService{
     return sortedContacts;
   }
 
+  // getMaxId(): number {
+  //   let maxId = 0;
+  //   for (let contact of this.contacts) {
+  //     let currentId = parseInt(contact.id);
+  //     if (currentId > maxId) {
+  //       maxId = currentId;
+  //     }
+  //   }
+  //   return maxId;
+  // }
+
   getMaxId(): number {
     let maxId = 0;
-    for (let contact of this.contacts) {
-      let currentId = parseInt(contact.id);
-      if (currentId > maxId) {
-        maxId = currentId;
+
+    for (const contact of this.contacts) {
+      if (contact) {
+        const parsedId = parseInt(contact.id, 10); // Explicitly use radix 10 for clarity
+        if (!isNaN(parsedId)) { // Check for valid numeric ID
+          if (parsedId > maxId) {
+            maxId = parsedId;
+          }
+        }
       }
     }
+
     return maxId;
   }
+
 
   stringifyWithoutCircular(obj: any): string {
     const cache = new Set();

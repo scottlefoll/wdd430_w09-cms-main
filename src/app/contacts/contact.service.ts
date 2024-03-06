@@ -54,15 +54,20 @@ export class ContactService{
         (contacts: Contact[]) => {
           this.contacts = contacts;
           this.maxContactId = this.getMaxId();
-          this.contacts = this.sortContacts(this.contacts);
-          console.log('contacts from database: ', this.contacts);
+          // this.contacts = this.sortContacts(this.contacts);
+          // Sort the list of documents by name using the sort() JavaScript array
+          // method. This method requires that you pass it a compare function. The compare
+          // function is called for each element in the array. It receives two inputs, the
+          // current element in the array and the next element in the array. If the current
+          // element is less than the next element, return a minus one. If the first element
+          // is greater than the next element, return a one; else, return zero.
+          this.contacts.sort((a, b) => (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0);
           this.contactListChangedEvent.next(this.contacts.slice());
         },
         (error: any) => {
           console.error(error);
         }
       );
-      return this.contacts.slice();
   }
 
   getContact(id: string): Contact{
@@ -133,7 +138,8 @@ export class ContactService{
   }
 
   storeContacts() {
-    let contacts = this.stringifyWithoutCircular(this.contacts);
+    // let contacts = this.stringifyWithoutCircular(this.contacts);
+    let contacts = JSON.stringify(this.contacts);
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });

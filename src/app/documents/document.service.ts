@@ -55,8 +55,6 @@ export class DocumentService{
           console.error(error);
         }
       );
-
-    return this.documents.slice();
   }
 
   getDocument(id: string): Document{

@@ -20,10 +20,7 @@ export class ContactService{
 
   // Inject the HttpClient object into the DocumentService class through dependency injection.
   // The HttpClient object will be used to send HTTP requests to the server.
-  constructor(private http: HttpClient) {
-    this.contacts = this.sortContacts(this.getContacts());
-    this.maxContactId = this.getMaxId();
-  }
+  constructor(private http: HttpClient) {}
 
   addContact(newContact: Contact){
     if(!newContact){

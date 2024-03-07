@@ -20,7 +20,10 @@ export class ContactService{
 
   // Inject the HttpClient object into the DocumentService class through dependency injection.
   // The HttpClient object will be used to send HTTP requests to the server.
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.contacts = this.sortContacts(this.getContacts());
+    this.maxContactId = this.getMaxId();
+  }
 
   addContact(newContact: Contact){
     if(!newContact){
@@ -51,20 +54,21 @@ export class ContactService{
         (contacts: Contact[]) => {
           this.contacts = contacts;
           this.maxContactId = this.getMaxId();
-          // this.contacts = this.sortContacts(this.contacts);
+          this.contacts = this.sortContacts(this.contacts);
           // Sort the list of documents by name using the sort() JavaScript array
           // method. This method requires that you pass it a compare function. The compare
           // function is called for each element in the array. It receives two inputs, the
           // current element in the array and the next element in the array. If the current
           // element is less than the next element, return a minus one. If the first element
           // is greater than the next element, return a one; else, return zero.
-          this.contacts.sort((a, b) => (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0);
+          // this.contacts.sort((a, b) => (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0);
           this.contactListChangedEvent.next(this.contacts.slice());
         },
         (error: any) => {
           console.error(error);
         }
       );
+      return this.contacts.slice();
   }
 
   getContact(id: string): Contact{

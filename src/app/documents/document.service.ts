@@ -19,10 +19,7 @@ export class DocumentService{
 
   // Inject the HttpClient object into the DocumentService class through dependency injection.
   // The HttpClient object will be used to send HTTP requests to the server.
-  constructor(private http: HttpClient) {
-    this.documents = this.sortDocuments(this.getDocuments());
-    this.maxDocumentId = this.getMaxId();
-  }
+  constructor(private http: HttpClient) {}
 
   addDocument(newDocument: Document) {
     if (!newDocument) {
@@ -55,8 +52,6 @@ export class DocumentService{
           console.error(error);
         }
       );
-
-    return this.documents.slice();
   }
 
   getDocument(id: string): Document{

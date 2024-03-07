@@ -18,7 +18,9 @@ export class DocumentListComponent implements OnInit{
 
   constructor(private documentService: DocumentService,
               private router: Router,
-              private route: ActivatedRoute) {}
+              private route: ActivatedRoute) {
+    this.documents = this.documentService.getDocuments();
+  }
 
   ngOnInit() {
     this.documentService.documentChangedEvent
@@ -47,9 +49,4 @@ export class DocumentListComponent implements OnInit{
   isEditMode(): boolean {
     return this.documentService.getEditMode();
   }
-
-  isAddMode(): boolean {
-    return this.documentService.getAddMode();
-  }
 }
-

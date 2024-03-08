@@ -45,7 +45,8 @@ export class DocumentService{
         (documents: Document[]) => {
           this.documents = documents;
           this.maxDocumentId = this.getMaxId();
-          this.documents = this.sortDocuments(this.documents);
+          // this.documents.sort((a, b) => (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0);
+          this.documents.sort((a, b) => a.name.localeCompare(b.name));
           this.documentListChangedEvent.next(this.documents.slice());
         },
         (error: any) => {
@@ -126,19 +127,6 @@ export class DocumentService{
       .subscribe(response => {
         this.documentListChangedEvent.next(this.documents.slice());
       });
-  }
-
-  sortDocuments(documents: Document[]): Document[] {
-    let sortedDocuments: Document[] = [];
-
-    documents.forEach(doc => {
-      if (doc.children && doc.children.length > 0) {
-        this.sortDocuments(doc.children);
-      }
-    });
-
-    sortedDocuments = documents.sort((a, b) => a.name.localeCompare(b.name));
-    return sortedDocuments;
   }
 
   getMaxId(): number {

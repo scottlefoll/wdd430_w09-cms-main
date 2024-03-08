@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router} from '@angular/router';
+import { Subscription } from 'rxjs';
+
 import { Message } from '../message.model';
+import { MessageItemComponent } from '../message-item/message-item.component';
 import { MessageService } from '../message.service';
 
 // declare a message property to store the form values
@@ -11,24 +15,45 @@ message: Message;
   styleUrls: ['./message-list.component.css']
 })
 export class MessageListComponent implements OnInit {
-
-  //  sample list of messages to test the component
   messages: Message[] = [];
+  message: string;
+  subscription: Subscription;
 
-    constructor(private messageService: MessageService) { }
+  constructor(private messageService: MessageService,
+              private router: Router,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.messages = this.messageService.getMessages();
-    this.messageService.messageChangedEvent.subscribe(
+    this.messageService.getMessages();
+    this.messageService.messageChangedEvent
+      .subscribe(
       (messages: Message[]) => {
         this.messages = messages;
       }
     );
+
+    this.subscription = this.messageService.messageListChangedEvent
+    .subscribe(
+      (messagesList: Message[]) => {
+        this.messages = messagesList;
+      }
+    );
   }
 
-  // add a message to the message list
-  // onAddMessage(message: Message) {
-  //   this.messages.push(message);
-  // }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  onNewDocument(){
+    this.router.navigate(['new'], {relativeTo: this.route});
+  }
+
+  isEditMode(): boolean {
+    return this.messageService.getEditMode();
+  }
+
+  isAddMode(): boolean {
+    return this.messageService.getEditMode();
+  }
 
 }

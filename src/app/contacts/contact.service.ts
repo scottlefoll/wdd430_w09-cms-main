@@ -57,8 +57,8 @@ export class ContactService{
           this.contacts = contacts;
           // this.contacts = this.sortContacts(contacts);
           this.maxContactId = this.getMaxId();
-          // this.contacts = this.sortContacts(this.contacts);
-          this.contacts.sort((a, b) => (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0);
+          // this.contacts.sort((a, b) => (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0);
+          this.contacts.sort((a, b) => a.name.localeCompare(b.name));
           this.contactListChangedEvent.next(this.contacts.slice());
         },
         (error: any) => {
@@ -93,8 +93,6 @@ export class ContactService{
   }
 
   updateContact(originalContact: Contact, newContact: Contact){
-    console.log('updateContact in contact.service.ts');
-    alert('updateContact in contact.service.ts');
     if(!originalContact || !newContact){
       console.error('Contact not found - update unsuccessful!');
       alert('Contact not found - update unsuccessfull!');

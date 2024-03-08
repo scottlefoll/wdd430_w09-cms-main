@@ -137,7 +137,6 @@ export class ContactService{
   }
 
   storeContacts() {
-    // let contacts = this.stringifyWithoutCircular(this.contacts);
     let contacts = JSON.stringify(this.contacts);
     let headers = new HttpHeaders({'Content-Type': 'application/json'});
 
@@ -162,22 +161,6 @@ export class ContactService{
     }
 
     return maxId;
-  }
-
-
-  stringifyWithoutCircular(obj: any): string {
-    const cache = new Set();
-
-    return JSON.stringify(obj, (key, value) => {
-      if (typeof value === 'object' && value !== null) {
-        if (cache.has(value)) {
-          // Circular reference found, discard key
-          return;
-        }
-        cache.add(value);
-      }
-      return value;
-    });
   }
 
 }

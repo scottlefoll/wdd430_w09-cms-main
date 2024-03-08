@@ -53,24 +53,9 @@ export class ContactEditComponent implements OnInit, CanComponentDeactivate {
         this.contactService.setEditMode(true);
         this.contactService.setAddMode(false);
         // clone the contact object to a new object
-        this.newContact = JSON.parse(this.stringifyWithoutCircular(this.contact));
+        this.newContact = JSON.parse(JSON.stringify(this.contact));
       }
     );
-  }
-
-  stringifyWithoutCircular(obj: any): string {
-    const cache = new Set();
-
-    return JSON.stringify(obj, (key, value) => {
-      if (typeof value === 'object' && value !== null) {
-        if (cache.has(value)) {
-          // Circular reference found, discard key
-          return;
-        }
-        cache.add(value);
-      }
-      return value;
-    });
   }
 
   onSubmit(form: NgForm) {

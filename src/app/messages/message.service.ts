@@ -120,9 +120,7 @@ export class MessageService{
 
   storeMessages() {
     let messages = JSON.stringify(this.messages);
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
+    let headers = new HttpHeaders({'Content-Type': 'application/json'});
 
     this.http.put('https://wdd430-cms-5cd5d-default-rtdb.firebaseio.com/messages.json', messages, {headers: headers})
       .subscribe(response => {

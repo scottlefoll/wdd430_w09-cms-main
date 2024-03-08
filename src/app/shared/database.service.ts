@@ -7,11 +7,9 @@ export class DatabaseServiceService {
 
   constructor() { }
 
-  storeDocuments() {
+  storeCollDocuments() {
     let documents = JSON.stringify(this.documents);
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
+    let headers = new HttpHeaders({'Content-Type': 'application/json'});
 
     this.http.put('https://wdd430-cms-5cd5d-default-rtdb.firebaseio.com/documents.json', documents, {headers: headers})
       .subscribe(response => {

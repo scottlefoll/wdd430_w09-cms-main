@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { catchError, tap } from "rxjs";
 
 import { Contact } from "./contact.model";
+import { MessageService } from "../messages/message.service";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class ContactService{
 
   // Inject the HttpClient object into the DocumentService class through dependency injection.
   // The HttpClient object will be used to send HTTP requests to the server.
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private messageService: MessageService) {}
 
   addContact(newContact: Contact){
     if(!newContact){
@@ -129,6 +130,7 @@ export class ContactService{
       console.error('Contact not found - deletion unsuccessful!');
       return;
     }
+    this.messageService.deleteMessages(contact.id);
     this.contacts.splice(pos, 1);
     // this.contactChangedEvent.next(this.contacts.slice());
     this.storeContacts();

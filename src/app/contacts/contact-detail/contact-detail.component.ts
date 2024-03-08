@@ -36,8 +36,8 @@ export class ContactDetailComponent {
   }
 
   onDelete() {
-
-    if (confirm('Are you sure you want to delete the contact for ' + this.contact.name + '?')) {
+    if (confirm('Are you sure you want to delete the contact for ' + this.contact.name +
+      '? All messages associated with this contact will be deleted as well.')) {
       this.contactService.deleteContact(this.contact);
       this.router.navigate(['/contacts']);
     } else {;

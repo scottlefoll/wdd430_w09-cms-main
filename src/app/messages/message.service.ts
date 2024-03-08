@@ -108,6 +108,16 @@ export class MessageService{
     this.storeMessages();
   }
 
+  deleteMessages(senderId: string) {
+    for (let i = this.messages.length - 1; i >= 0; i--) {
+      if (this.messages[i].sender === senderId) {
+        this.messages.splice(i, 1);
+      }
+    }
+    // this.messageChangedEvent.next(this.messages.slice());
+    this.storeMessages();
+  }
+
   storeMessages() {
     let messages = JSON.stringify(this.messages);
     let headers = new HttpHeaders({

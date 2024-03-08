@@ -111,9 +111,6 @@ export class ContactService{
     // Assign values of the newContact to the originalContact
     this.contacts[pos] = newContact;
 
-    // Log the contents of the local array before updating
-    console.log('Local Array Before Update:', this.contacts.slice());
-
     // Update the contact list
     // this.contactListChangedEvent.next(this.contacts.slice());
     this.storeContacts();

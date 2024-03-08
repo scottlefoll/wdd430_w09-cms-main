@@ -38,6 +38,9 @@ export class ContactListComponent implements OnInit {
           this.contacts.sort((a, b) => (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0);
         }
       );
+
+      this.contactService.setEditMode(false);
+      this.contactService.setAddMode(false);
   }
 
   ngOnDestroy() {

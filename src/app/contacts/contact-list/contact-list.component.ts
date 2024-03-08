@@ -20,9 +20,7 @@ export class ContactListComponent implements OnInit {
 
   constructor(private contactService: ContactService,
               private router: Router,
-              private route: ActivatedRoute) {
-                this.contacts = this.contactService.getContacts();
-              }
+              private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.contactService.getContacts();
@@ -37,6 +35,7 @@ export class ContactListComponent implements OnInit {
       .subscribe(
         (contactsList: Contact[]) => {
           this.contacts = contactsList;
+          this.contacts.sort((a, b) => (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0);
         }
       );
   }

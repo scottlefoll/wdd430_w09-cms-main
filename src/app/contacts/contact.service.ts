@@ -20,23 +20,24 @@ export class ContactService{
 
   // Inject the HttpClient object into the DocumentService class through dependency injection.
   // The HttpClient object will be used to send HTTP requests to the server.
-  constructor(private http: HttpClient) {
-    this.contacts = this.sortContacts(this.getContacts());
-    this.maxContactId = this.getMaxId();
-  }
+  constructor(private http: HttpClient) {}
 
   addContact(newContact: Contact){
     if(!newContact){
       return;
     }
 
-    this.maxContactId = this.getMaxId()+1;
-    newContact.id = this.maxContactId.toString();
+    this.maxContactId = this.getMaxId();
+    newContact.id = String(this.maxContactId + 1);
 
     if (newContact.group) {
       newContact.group.forEach(contact => {
         if (!contact.group) {
           contact.group = [];
+        }
+        // check if the contact is already in the group
+        if (!contact.group.some(existingContact => existingContact.id === newContact.id)) {
+          contact.group.push(newContact);
         }
         contact.group.push( newContact );
       })
@@ -52,23 +53,18 @@ export class ContactService{
     this.http.get('https://wdd430-cms-5cd5d-default-rtdb.firebaseio.com/contacts.json')
       .subscribe(
         (contacts: Contact[]) => {
+          this.contacts.length = 0;
           this.contacts = contacts;
+          // this.contacts = this.sortContacts(contacts);
           this.maxContactId = this.getMaxId();
-          this.contacts = this.sortContacts(this.contacts);
-          // Sort the list of documents by name using the sort() JavaScript array
-          // method. This method requires that you pass it a compare function. The compare
-          // function is called for each element in the array. It receives two inputs, the
-          // current element in the array and the next element in the array. If the current
-          // element is less than the next element, return a minus one. If the first element
-          // is greater than the next element, return a one; else, return zero.
-          // this.contacts.sort((a, b) => (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0);
+          // this.contacts = this.sortContacts(this.contacts);
+          this.contacts.sort((a, b) => (a.name < b.name) ? -1 : (a.name > b.name) ? 1 : 0);
           this.contactListChangedEvent.next(this.contacts.slice());
         },
         (error: any) => {
           console.error(error);
         }
       );
-      return this.contacts.slice();
   }
 
   getContact(id: string): Contact{
@@ -146,56 +142,13 @@ export class ContactService{
   storeContacts() {
     // let contacts = this.stringifyWithoutCircular(this.contacts);
     let contacts = JSON.stringify(this.contacts);
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
+    let headers = new HttpHeaders({'Content-Type': 'application/json'});
 
     this.http.put('https://wdd430-cms-5cd5d-default-rtdb.firebaseio.com/contacts.json', contacts, {headers: headers})
       .subscribe(response => {
         this.contactListChangedEvent.next(this.contacts.slice());
       });
   }
-
-  private sortContacts(contacts: Contact[]): Contact[] {
-    const groups = contacts.filter(contact => contact.group && contact.group.length > 0);
-    const individuals = contacts.filter(contact => !contact.group);
-
-    const sortedGroups = groups.sort((a, b) => a.name.localeCompare(b.name));
-    let sortedContacts: Contact[] = [];
-
-    const lastName = (name: string) => {
-      const spaceIndex = name.indexOf(' ');
-      return spaceIndex !== -1 ? name.substring(spaceIndex + 1) : name;
-    };
-
-    sortedGroups.forEach(group => {
-
-      sortedContacts.push(group);
-      const sortedMembers = group.group.sort((a, b) => lastName(a.name).localeCompare(lastName(b.name)));
-
-      sortedMembers.forEach(member => {
-        const memberDetail = contacts.find(contact => contact.id === member.id);
-        if (memberDetail) {
-          sortedContacts.push(memberDetail);
-        }
-      });
-    });
-
-    const sortedIndividuals = individuals.sort((a, b) => lastName(a.name).localeCompare(lastName(b.name)));
-    sortedContacts = sortedContacts.concat(sortedIndividuals);
-    return sortedContacts;
-  }
-
-  // getMaxId(): number {
-  //   let maxId = 0;
-  //   for (let contact of this.contacts) {
-  //     let currentId = parseInt(contact.id);
-  //     if (currentId > maxId) {
-  //       maxId = currentId;
-  //     }
-  //   }
-  //   return maxId;
-  // }
 
   getMaxId(): number {
     let maxId = 0;
